@@ -3,684 +3,334 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>amber atlas — origins of whisky aroma</title>
+<title>Amber Atlas — 完全統合テイスティング版</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg1:#f8f1e3; --bg2:#f2e3c4; --ink:#3a2e2e; --muted:#7a6b5a;
-  --card:#ffffff; --line:#e8dcc7; --shadow:0 6px 20px rgba(0,0,0,.08);
-  /* driven palette */
-  --sweet:#b97a56; --wine:#8c3b3b; --wood:#6b4b32; --proc:#e0a14b;
-  --malt:#d6b079; --tropic:#bfa33a; --exp:#7a9a7e;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0; background:linear-gradient(to bottom,var(--bg1),var(--bg2)); color:var(--ink); font-family:'Noto Sans JP',system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{padding:18px clamp(14px,4vw,28px) 8px; text-align:center}
-.h1{font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.5px; font-size:clamp(22px,6vw,34px); margin:0 0 6px}
-.sub{color:var(--muted); font-size:clamp(12px,3.6vw,14px); margin:0}
-.toolbar{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:14px auto 8px}
-.btn,.chip{border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:999px; padding:10px 14px; font-weight:700; font-size:13px; cursor:pointer; box-shadow:var(--shadow)}
-.btn:active{transform:scale(.98)}
-.chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:8px auto 18px}
-.chip[data-on="true"]{outline:2px solid #2b1a09; outline-offset:2px}
-main{padding:8px clamp(10px,3.5vw,24px) 56px; max-width:1100px; margin:0 auto}
-.section{border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.72); box-shadow:var(--shadow); margin:12px 0 22px; overflow:hidden}
-.sechead{padding:14px 16px; background:linear-gradient(90deg,rgba(255,255,255,.85),rgba(255,255,255,.55)); display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:5}
-.sectitle{font-family:'Playfair Display',serif; font-size:clamp(16px,4.5vw,22px); margin:0}
-.secdesc{margin-left:auto; color:var(--muted); font-size:12px}
-.cask{border-top:1px solid var(--line)}
-.cask button.toggle{all:unset; display:flex; gap:10px; align-items:center; width:100%; cursor:pointer; padding:12px 16px}
-.cask .tagcask{display:inline-flex; align-items:center; gap:8px; font-weight:800}
-.cask .dot{width:10px; height:10px; border-radius:50%; background:var(--ink); box-shadow:0 0 0 3px rgba(0,0,0,.05) inset}
-.cask .name{font-size:15px; font-weight:800}
-.cask .aka{color:var(--muted); font-size:12px}
-.panel{display:none; padding:0 16px 14px}
-.flow{border-left:3px solid var(--line); margin:2px 0 0 14px; padding-left:12px; display:grid; gap:8px}
-.row{display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start}
-.label{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; color:#fff; font-size:12px; font-weight:800}
-.label.sweet{background:var(--sweet)}
-.label.wine{background:var(--wine)}
-.label.wood{background:var(--wood)}
-.label.proc{background:var(--proc); color:#2b1a09}
-.label.malt{background:var(--malt); color:#2b1a09}
-.label.tropic{background:var(--tropic); color:#2b1a09}
-.label.exp{background:var(--exp)}
-.aromas{display:flex; flex-wrap:wrap; gap:6px}
-.note{background:#fff; border:1px solid var(--line); padding:6px 10px; border-radius:10px; font-weight:700; font-size:12px}
-.hidden{display:none !important}
-.sep{height:1px; background:var(--line); margin:10px 16px}
-/* dark mode */
-@media (prefers-color-scheme: dark){
-  :root{--card:#171412; --line:#3a2f24}
-  body{background:radial-gradient(1000px at 50% 8%,#1b1917,#0f0e0d); color:#f5efe6}
-  .section{background:#171412}
-  .btn,.chip{background:#181615; color:#f5efe6; border-color:#3a2f24}
-  .note{background:#141110; border-color:#3a2f24}
-  .sechead{background:linear-gradient(90deg,rgba(23,20,18,.9),rgba(23,20,18,.6))}
-  .aka{color:#c3b6a4}
-  .secdesc{color:#b8a992}
-}
+body{background:radial-gradient(circle at top,#f7ede1,#f1dec3);color:#3a2e2e;font-family:'Noto Sans JP',sans-serif;margin:0;padding:22px;}
+summary{cursor:pointer;font-weight:700;list-style:none;transition:color .25s;}
+summary:hover{color:#b27a42;}
+summary::-webkit-details-marker{display:none}
+.details-level1{border:2px solid rgba(194,155,108,0.45);border-radius:12px;margin:12px 0;padding:12px;background:#fffdf8;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
+.details-level1>summary{font-size:19px;color:#2b1a09;display:flex;align-items:center;gap:8px;}
+.details-level2{border:1px solid rgba(194,155,108,0.3);border-radius:8px;margin:8px 0 8px 18px;padding:10px 12px;background:#fffaf3;}
+.details-level2>summary{font-size:15px;color:#4a3a2b;display:flex;align-items:center;gap:6px;}
+.desc{margin:6px 0 6px 4px;font-size:13.5px;color:#5a4630;line-height:1.6;}
+.label{display:inline-block;border-radius:12px;padding:3px 8px;font-weight:700;font-size:12px;color:#fff;}
+.label.sweet{background:#b97a56}
+.label.wine{background:#8c3b3b}
+.label.wood{background:#6b4b32}
+.label.proc{background:#e0a14b;color:#2b1a09}
+.label.malt{background:#d6b079;color:#2b1a09}
+.label.exp{background:#7a9a7e}
+/* 補助タグ（必要に応じて）*/
+.label.tropic{background:#bfa33a;color:#2b1a09}
+.note{display:inline-block;margin:3px;padding:4px 8px;background:#fff;border:1px solid #e8dcc7;border-radius:8px;font-size:12px;font-weight:600;}
+.icon{font-size:18px;}
+@media(max-width:700px){body{padding:14px;}summary{font-size:15px;} .details-level1{padding:8px;}}
+footer{text-align:center;font-size:12px;color:#7a6b5a;margin-top:40px;}
 </style>
 </head>
 <body>
-<header>
-  <h1 class="h1">Amber Atlas — Origins of Whisky Aroma</h1>
-  <p class="sub">樽（Cause）→ 香味ドリブン → 代表アロマ（Effect）を、カテゴリ別フローチャートで可視化</p>
-  <div class="toolbar">
-    <button class="btn" id="expandAll">＋ すべて展開</button>
-    <button class="btn" id="collapseAll">－ すべて折りたたみ</button>
-  </div>
-  <div class="chips" id="filterChips" aria-label="Driven フィルター">
-    <button class="chip" data-tag="sweet" data-on="true">🍇 Sweet</button>
-    <button class="chip" data-tag="wine" data-on="true">🍷 Wine</button>
-    <button class="chip" data-tag="wood" data-on="true">🪵 Wood</button>
-    <button class="chip" data-tag="proc" data-on="true">🔥 Process</button>
-    <button class="chip" data-tag="malt" data-on="true">🌾 Malt</button>
-    <button class="chip" data-tag="tropic" data-on="true">🌴 Tropical</button>
-    <button class="chip" data-tag="exp" data-on="true">🌿 Experimental</button>
-  </div>
-</header>
+<h1 style="text-align:center;font-family:'Playfair Display',serif;letter-spacing:1px;">Amber Atlas — 完全統合テイスティング版</h1>
+<p style="text-align:center;color:#7a6b5a;margin-bottom:22px;">味の説明＋香味タグ（順序: 🍇sweet → 🍷wine → 🪵wood → 🔥process → 🌾malt → 🌿experimental）</p>
 
-<main>
-  <!-- ===================== SHERRY / WINE ===================== -->
-  <section class="section" id="sec-sherry">
-    <div class="sechead">
-      <h2 class="sectitle">🍷 sherry / wine casks — シェリー・ワイン系</h2>
-      <span class="secdesc">甘味・果実・酸・タンニンのレイヤー</span>
-    </div>
+<!-- 🍷 SHERRY / WINE -->
+<details class="details-level1">
+  <summary>🍷 sherry / wine casks — シェリー・ワイン系</summary>
 
-    <!-- PX -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#7d3b2c"></span><span class="name">PX sherry</span> <span class="aka">（ペドロ・ヒメネス）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">raisin</span><span class="note">syrup</span><span class="note">chocolate</span><span class="note">fig</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">nut</span><span class="note">spice</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>PX sherry（ペドロ・ヒメネス）</summary>
+    <p class="desc">極甘口シェリー樽。干しブドウやシロップの甘美さが重なり、ウイスキーを濃密でリッチに。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">raisin</span><span class="note">syrup</span><span class="note">chocolate</span><span class="note">fig</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">nuts</span><span class="note">spice</span></div>
+  </details>
 
-    <!-- Oloroso -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#5e2a1f"></span><span class="name">oloroso</span> <span class="aka">（オロロソ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">dried fruits</span><span class="note">honey</span><span class="note">cocoa</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">nut</span><span class="note">tannin</span><span class="note">spice</span></div>
-        </div>
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">vanilla</span><span class="note">toasted oak</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>oloroso（オロロソ）</summary>
+    <p class="desc">ナッツとスパイスが主役。コク深い甘辛さで重厚感を与え、長い余韻を作る。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">honey</span><span class="note">cocoa</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">nut</span><span class="note">tannin</span></div>
+  </details>
 
-    <!-- Fino / Manzanilla -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#845d3c"></span><span class="name">fino / manzanilla</span> <span class="aka">（フィノ／マンサニージャ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">almond</span><span class="note">dry</span><span class="note">saline</span></div>
-        </div>
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">light spice</span><span class="note">toasty</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>amontillado（アモンティリャード）</summary>
+    <p class="desc">甘いナッツ香と酸のアクセント。辛口と甘味の中庸で、複雑さと奥行きを付与。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">dry sweetness</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">hazelnut</span><span class="note">leather</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">spice</span></div>
+  </details>
 
-    <!-- Amontillado -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6f4c34"></span><span class="name">amontillado</span> <span class="aka">（アモンティリャード）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">hazelnut</span><span class="note">leather</span><span class="note">dry sweetness</span></div>
-        </div>
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">spice</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>fino / manzanilla（フィノ／マンサニージャ）</summary>
+    <p class="desc">軽快な辛口。ミネラル感と塩気が加わり、ドライでシャープな輪郭を与える。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">almond sweetness</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">almond</span><span class="note">dry</span><span class="note">saline</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">light spice</span></div>
+  </details>
 
-    <!-- Moscatel -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#8a3c4a"></span><span class="name">moscatel</span> <span class="aka">（モスカテル）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">muscat</span><span class="note">lychee</span><span class="note">floral</span></div>
-        </div>
-        <div class="row tag-tropic"><span class="label tropic">🌴 tropical</span>
-          <div class="aromas"><span class="note">cassis</span><span class="note">nectar</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>moscatel（モスカテル）</summary>
+    <p class="desc">華やかでジューシー。マスカットやライチの甘香が重なり、デザートのような余韻。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">muscat</span><span class="note">lychee</span><span class="note">floral</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">nectar</span></div>
+  </details>
 
-    <!-- Sauternes -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#c08d2b"></span><span class="name">sauternes</span> <span class="aka">（ソーテルヌ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">honey</span><span class="note">apricot</span></div>
-        </div>
-        <div class="row tag-tropic"><span class="label tropic">🌴 tropical</span>
-          <div class="aromas"><span class="note">orange peel</span><span class="note">silky</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>sauternes（ソーテルヌ）</summary>
+    <p class="desc">蜂蜜とアプリコットの貴腐らしい甘美。まろやかでクリーミーな mouthfeel を与える。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">honey</span><span class="note">apricot</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">botrytised nuance</span></div>
+  </details>
 
-    <!-- Port Pipe -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#803030"></span><span class="name">port pipe</span> <span class="aka">（ポートパイプ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">plum</span><span class="note">chocolate</span><span class="note">caramel</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">nut</span><span class="note">tannin</span><span class="note">spice</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>port pipe（ポートパイプ）</summary>
+    <p class="desc">赤果実とチョコの重なり。厚みのある甘さと滑らかさで、ふくよかな余韻。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">plum</span><span class="note">chocolate</span><span class="note">caramel</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">nut</span><span class="note">tannin</span><span class="note">spice</span></div>
+  </details>
 
-    <!-- Madeira -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#9a5a2f"></span><span class="name">madeira</span> <span class="aka">（マデイラ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">burnt sugar</span><span class="note">toffee</span><span class="note">coffee</span></div>
-        </div>
-        <div class="row tag-tropic"><span class="label tropic">🌴 tropical</span>
-          <div class="aromas"><span class="note">citrus peel</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>madeira（マデイラ）</summary>
+    <p class="desc">焦がし糖と柑橘のキレ。甘さに清涼感を添え、複雑で引き締まったバランス。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">burnt sugar</span><span class="note">toffee</span><span class="note">coffee</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">citrus peel</span></div>
+  </details>
 
-    <!-- Marsala -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#8e4f2b"></span><span class="name">marsala</span> <span class="aka">（マルサラ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">toffee</span><span class="note">caramel</span><span class="note">vanilla</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">dried fruit</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>marsala（マルサラ）</summary>
+    <p class="desc">柑橘と蜂蜜、スパイスが織りなす芳醇。甘みと辛みの立体感を与える。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">toffee</span><span class="note">caramel</span><span class="note">vanilla</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">dried fruit</span></div>
+  </details>
 
-    <!-- Amarone / Barolo / Burgundy (red) -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6d2931"></span><span class="name">amarone / barolo / burgundy</span> <span class="aka">（アマローネ／バローロ／ブルゴーニュ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">berry</span><span class="note">leather</span><span class="note">cocoa</span><span class="note">tannin</span></div>
-        </div>
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">dark fruit</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+  <details class="details-level2"><summary>amarone / barolo / burgundy（赤ワイン）</summary>
+    <p class="desc">濃厚で粘性高い赤。タンニンとカカオの苦味が重なり、力強いボディを形成。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">dark fruit</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">berry</span><span class="note">leather</span><span class="note">cocoa</span><span class="note">tannin</span></div>
+  </details>
+</details>
 
-  <!-- ===================== OAK & WOOD ===================== -->
-  <section class="section" id="sec-wood">
-    <div class="sechead">
-      <h2 class="sectitle">🪵 oak & wood species — 樽材</h2>
-      <span class="secdesc">骨格（バニラ/スパイス/香木）とテクスチャ</span>
-    </div>
+<!-- 🪵 OAK & WOOD SPECIES -->
+<details class="details-level1">
+  <summary>🪵 oak & wood species — 樽材</summary>
 
-    <!-- American Oak / Bourbon -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#8c5a2e"></span><span class="name">american oak (bourbon)</span> <span class="aka">（アメリカンオーク／バーボン）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">vanilla</span><span class="note">coconut</span><span class="note">toffee</span><span class="note">clove</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">char level → caramel</span><span class="note">baking spice</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>american oak（アメリカンオーク）</summary>
+    <p class="desc">バニリン由来の甘香。軽快でクリーミーな甘みがのり、親しみやすい輪郭に。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">vanilla</span><span class="note">coconut</span><span class="note">toffee</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">toasted oak</span><span class="note">clove</span></div>
+  </details>
 
-    <!-- European Oak -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6b4b32"></span><span class="name">european oak</span> <span class="aka">（ヨーロピアンオーク）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">tannin</span><span class="note">spice</span><span class="note">dark chocolate</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">dried fruit</span><span class="note">structure</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>european oak（ヨーロピアンオーク）</summary>
+    <p class="desc">タンニンとスパイスで骨格を付与。ドライフルーツ系の落ち着いた甘みを重ねる。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">dried fruit sweetness</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">dried fruit</span><span class="note">nutmeg</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">oak spice</span></div>
+  </details>
 
-    <!-- Mizunara -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#7a9a7e"></span><span class="name">mizunara (japanese oak)</span> <span class="aka">（ミズナラ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">sandalwood</span><span class="note">coconut</span></div>
-        </div>
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">incense</span><span class="note">oriental spice</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>mizunara（ミズナラ）</summary>
+    <p class="desc">伽羅・白檀を想起させる気品。甘香とオリエンタルな余韻が長く続く。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">subtle vanilla</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">incense</span><span class="note">sandalwood</span><span class="note">spice</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">oriental nuance</span></div>
+  </details>
 
-    <!-- Chestnut -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#7b5a3d"></span><span class="name">chestnut</span> <span class="aka">（栗）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">nutty</span><span class="note">woody sweetness</span></div>
-        </div>
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">soft texture</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>chestnut（栗）</summary>
+    <p class="desc">ナッティで柔らかな渋味。個性的な深みを加え、余韻に土っぽい温もり。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">praline</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">nutty</span><span class="note">bitter</span><span class="note">earthy</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">alt wood</span></div>
+  </details>
 
-    <!-- Cedar -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#5f6f5f"></span><span class="name">cedar</span> <span class="aka">（杉）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">hinoki</span><span class="note">resin</span><span class="note">herb</span></div>
-        </div>
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">fresh woody</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>cedar / sugi（杉）</summary>
+    <p class="desc">和の香木系。穀物香と調和し、清々しい樹香とまろやかさを付与。</p>
+    <div><span class="label wood">🪵 wood</span><span class="note">cedar</span><span class="note">resin</span><span class="note">herbal</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">japanese craft</span></div>
+  </details>
 
-    <!-- Hybrid / Double Oak -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#73523a"></span><span class="name">hybrid / double oak</span> <span class="aka">（ハイブリッド／ダブルオーク）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">layered oak</span><span class="note">complex spice</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">integration</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+  <details class="details-level2"><summary>unity（ユニティ／ハイブリッド）</summary>
+    <p class="desc">異樹種の融合でレイヤー感を創出。ミズナラ×フレンチなどの複合個性。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">layered sweetness</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">dual oak</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">fusion</span></div>
+  </details>
+</details>
 
-  <!-- ===================== PROCESS / USAGE ===================== -->
-  <section class="section" id="sec-process">
-    <div class="sechead">
-      <h2 class="sectitle">🔥 process / usage — 使い方・焼き</h2>
-      <span class="secdesc">樽影響の強度と質をコントロール</span>
-    </div>
+<!-- 🔥 PROCESS / USAGE -->
+<details class="details-level1">
+  <summary>🔥 process / usage — 使い方・焼き</summary>
 
-    <!-- First Fill -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#e0a14b"></span><span class="name">first fill</span> <span class="aka">（初回使用）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">intense vanilla</span><span class="note">baking spice</span><span class="note">deeper color</span></div>
-        </div>
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">oak</span><span class="note">toffee</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>first fill（初回使用）</summary>
+    <p class="desc">抽出が最も豊か。甘香と樽香が厚く、色合いも濃く出やすい力強い仕上がり。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">vanilla-rich</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">fresh oak</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">intense extraction</span></div>
+  </details>
 
-    <!-- Refill -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#d49a48"></span><span class="name">refill</span> <span class="aka">（再々使用）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">gentle oak</span><span class="note">spirit-driven</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>refill（再使用）</summary>
+    <p class="desc">穏やかな樽影響。原酒の果実味や蒸留由来の個性が前面に出やすい。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">light honey</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">subtle oak</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">gentle extraction</span></div>
+  </details>
 
-    <!-- Virgin Oak -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#c78f3a"></span><span class="name">virgin oak</span> <span class="aka">（新樽）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">toasty wood</span><span class="note">coconut</span><span class="note">clove</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">quick color</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>virgin oak（新樽）</summary>
+    <p class="desc">焼きの影響がダイレクト。バニラとスパイスが強まり、香ばしい甘苦さが乗る。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">vanilla</span><span class="note">caramel</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">toasty wood</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">char / heavy toast</span></div>
+  </details>
 
-    <!-- Charred / Toasted -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#a16a2b"></span><span class="name">charred / toasted</span> <span class="aka">（内側炭化／トースト）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">toffee</span><span class="note">caramel</span><span class="note">roasted nuts</span><span class="note">smoke</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>charred / toasted（炭化／トースト）</summary>
+    <p class="desc">焼き加減で香味が変容。ロースト坚やカラメル、微かなスモークが重なる。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">toffee</span><span class="note">caramel</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">roasted oak</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">char levels</span></div>
+  </details>
 
-    <!-- Rejuvenated -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#bc8a4b"></span><span class="name">rejuvenated</span> <span class="aka">（削り＋再チャー）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">refreshed</span><span class="note">clarity</span><span class="note">balanced</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>rejuvenated / re-char（再チャー）</summary>
+    <p class="desc">古樽の内面を削り再焼成。樽の生命力を回復し、明快で若々しい香味へ。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">clean sweetness</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">renewed oak</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">rejuvenation</span></div>
+  </details>
+</details>
 
-    <!-- Finish (short-term) -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#c99b59"></span><span class="name">finish</span> <span class="aka">（短期仕上げ）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">structure add</span><span class="note">sweet/fruity accent</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">layering</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+<!-- 🌴 SPIRITS & FORTIFIED -->
+<details class="details-level1">
+  <summary>🌴 spirits & fortified — スピリッツ／酒精強化</summary>
 
-  <!-- ===================== SPIRITS & FORTIFIED ===================== -->
-  <section class="section" id="sec-spirits">
-    <div class="sechead">
-      <h2 class="sectitle">🌴 spirits & fortified — スピリッツ／酒精強化</h2>
-      <span class="secdesc">トロピカル甘香・焼香・丸み</span>
-    </div>
+  <details class="details-level2"><summary>rum（ラム）</summary>
+    <p class="desc">モラセスとトロピカル果実。甘苦さと果実味が重なり、エキゾチックで厚みのある余韻。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">molasses</span><span class="note">burnt sugar</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">dried banana</span><span class="note">mango</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">oak spice</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">rum influence</span></div>
+  </details>
 
-    <!-- Rum -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#714b24"></span><span class="name">rum</span> <span class="aka">（ラム）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-tropic"><span class="label tropic">🌴 tropical</span>
-          <div class="aromas"><span class="note">banana</span><span class="note">pineapple</span><span class="note">molasses</span></div>
-        </div>
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">caramel</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">burnt sugar</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>brandy / cognac（ブランデー／コニャック）</summary>
+    <p class="desc">レーズンや熟葡萄の甘美。上品な果実味とバニラが重なり、丸みある口当たり。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">grape</span><span class="note">caramel</span><span class="note">vanilla</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">elegant fruit</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">fine oak</span></div>
+  </details>
+</details>
 
-    <!-- Brandy / Cognac -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#80543a"></span><span class="name">brandy / cognac</span> <span class="aka">（ブランデー／コニャック）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-sweet"><span class="label sweet">🍇 sweet</span>
-          <div class="aromas"><span class="note">grape</span><span class="note">caramel</span><span class="note">vanilla</span></div>
-        </div>
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">elegant fruit</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+<!-- 🌾 MALT / BEER / SAKE -->
+<details class="details-level1">
+  <summary>🌾 malt / beer / sake — 発酵・穀物共鳴</summary>
 
-  <!-- ===================== MALT / BEER / SAKE ===================== -->
-  <section class="section" id="sec-malt">
-    <div class="sechead">
-      <h2 class="sectitle">🌾 malt / beer / sake — 発酵・穀物共鳴</h2>
-      <span class="secdesc">麦芽・麹・酵母の風味を増幅</span>
-    </div>
+  <details class="details-level2"><summary>beer cask（ビール樽）</summary>
+    <p class="desc">麦芽の香ばしさとホップの余韻。ビターさがアクセントとなり、個性的な厚みを添える。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">malty sweetness</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">toasty</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">beer influence</span></div>
+    <div><span class="label malt">🌾 malt</span><span class="note">roasted malt</span></div>
+  </details>
 
-    <!-- Beer Cask -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6a5033"></span><span class="name">beer cask</span> <span class="aka">（ビール樽）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-malt"><span class="label malt">🌾 malt</span>
-          <div class="aromas"><span class="note">toasted malt</span><span class="note">nutty</span><span class="note">yeast</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">roast accent</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>sake cask（清酒樽）</summary>
+    <p class="desc">米由来の旨味と乳酸の柔らかさ。繊細でやさしい日本的テイストを重ねる。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">rice sweetness</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">sake influence</span></div>
+    <div><span class="label malt">🌾 malt</span><span class="note">rice umami</span><span class="note">lactic</span></div>
+  </details>
+</details>
 
-    <!-- Sake Cask -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6b6d5a"></span><span class="name">sake cask</span> <span class="aka">（清酒樽）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-malt"><span class="label malt">🌾 malt</span>
-          <div class="aromas"><span class="note">rice umami</span><span class="note">lactic</span><span class="note">floral</span></div>
-        </div>
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">delicate</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+<!-- 🌿 EXPERIMENTAL / CULTURAL -->
+<details class="details-level1">
+  <summary>🌿 experimental / cultural — 実験・文化</summary>
 
-  <!-- ===================== EXPERIMENTAL / CULTURAL ===================== -->
-  <section class="section" id="sec-experimental">
-    <div class="sechead">
-      <h2 class="sectitle">🌿 experimental / cultural — 実験・文化</h2>
-      <span class="secdesc">既存枠を越える設計・融合</span>
-    </div>
+  <details class="details-level2"><summary>hybrid / unity（ハイブリッド／ユニティ）</summary>
+    <p class="desc">異種木材の組合せで新たな層。甘香と樽香のレイヤーが複雑な奥行きを生む。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">layered</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">dual oak</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">fusion</span></div>
+  </details>
 
-    <!-- Unity / Hybrid blend idea -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#7a9a7e"></span><span class="name">unity / hybrid</span> <span class="aka">（ユニティ／ハイブリッド樽）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">mixed staves</span><span class="note">novel layers</span></div>
-        </div>
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">integration</span></div>
-        </div>
-      </div></div>
-    </div>
+  <details class="details-level2"><summary>cedar（杉文化）</summary>
+    <p class="desc">和の要素を前面に。爽やかな杉香が麦の風味と調和し、落ち着いた余韻に。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">subtle honey</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">cedar</span></div>
+    <div><span class="label exp">🌿 experimental</span><span class="note">cultural</span></div>
+  </details>
+</details>
 
-    <!-- Cedar / Mizunara are already above, but re-list as cultural anchor -->
-    <div class="sep"></div>
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#5f6f5f"></span><span class="name">cedar (japanese)</span> <span class="aka">（杉：和文化）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-exp"><span class="label exp">🌿 experimental</span>
-          <div class="aromas"><span class="note">hinoki</span><span class="note">resin</span><span class="note">herb</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+<!-- ⚙️ SIZE / VOLUME -->
+<details class="details-level1">
+  <summary>⚙️ size / volume — 容量・サイズ</summary>
 
-  <!-- ===================== SIZE / VOLUME ===================== -->
-  <section class="section" id="sec-size">
-    <div class="sechead">
-      <h2 class="sectitle">⚙️ size / volume — 容量・サイズ</h2>
-      <span class="secdesc">抽出強度と熟成スピード（小型＝速く濃く／大型＝穏やかに）</span>
-    </div>
+  <details class="details-level2"><summary>blood tub（約40L）</summary>
+    <p class="desc">超小型。表面積比大で熟成が加速。短期で濃密な抽出と強い個性を付与。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">dense sweetness</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">intense oak</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">rapid maturation</span></div>
+  </details>
 
-    <!-- Small → Large groups (compact notes) -->
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#8c6a4b"></span><span class="name">small casks</span> <span class="aka">（blood tub／firkin／quarter／rundlet）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-proc"><span class="label proc">🔥 process</span>
-          <div class="aromas"><span class="note">rapid extraction</span><span class="note">bold vanilla</span><span class="note">resin</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>firkin（約40L）</summary>
+    <p class="desc">小型でエネルギッシュ。短期で香味が濃く出て、生き生きとした輪郭に。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">concentrated</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">oak-forward</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">fast extraction</span></div>
+  </details>
 
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#7c5e43"></span><span class="name">medium casks</span> <span class="aka">（barrel／barrique／hogshead）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wood"><span class="label wood">🪵 wood</span>
-          <div class="aromas"><span class="note">balanced extraction</span><span class="note">aromatic</span></div>
-        </div>
-      </div></div>
-    </div>
-    <div class="sep"></div>
+  <details class="details-level2"><summary>quarter cask（約50L）</summary>
+    <p class="desc">小型ゆえ樽接触が増加。甘みとスパイスが早くのり、力感ある味わいへ。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">vanilla burst</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">oak spice</span></div>
+    <div><span class="label proc">🔥 process</span><span class="note">accelerated</span></div>
+  </details>
 
-    <div class="cask">
-      <button class="toggle" aria-expanded="false">
-        <span class="tagcask"><span class="dot" style="background:#6e533c"></span><span class="name">large casks</span> <span class="aka">（puncheon／butt／port pipe／gorda／tun）</span></span>
-      </button>
-      <div class="panel"><div class="flow">
-        <div class="row tag-wine"><span class="label wine">🍷 wine</span>
-          <div class="aromas"><span class="note">slow maturation</span><span class="note">round texture</span><span class="note">layered sweetness</span></div>
-        </div>
-      </div></div>
-    </div>
-  </section>
+  <details class="details-level2"><summary>rundlet（約60L）</summary>
+    <p class="desc">小〜中型の中間。密度とキレのバランスが良く、短中期熟成に好適。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">balanced</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">harmonised oak</span></div>
+  </details>
 
-</main>
+  <details class="details-level2"><summary>barrel（約200L）</summary>
+    <p class="desc">最も一般的。均整のとれた抽出で、その蒸留所らしさを素直に表現。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">vanilla</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">balanced oak</span></div>
+  </details>
 
-<footer style="text-align:center; padding:18px 12px 36px; color:var(--muted); font-size:12px">
-  <div style="margin-bottom:10px">
-    <!-- 🔁 Reverse Search ページへのリンク -->
-    <a href="https://cask-atlas.vercel.app/reverse.html"
-       style="display:inline-block; padding:10px 14px; border-radius:10px;
-              background:linear-gradient(135deg,#e7c97a,#d6a85a);
-              color:#2b1a09; font-weight:800; text-decoration:none;
-              box-shadow:0 4px 14px rgba(0,0,0,.25)">
-      🔁 aroma reverse search
-    </a>
-    &nbsp;&nbsp;
-    <!-- 🔙 HUB に戻るリンク -->
-    <a href="https://amber-hub.vercel.app/"
-       style="display:inline-block; padding:10px 14px; border-radius:10px;
-              background:linear-gradient(135deg,#e7c97a,#d6a85a);
-              color:#2b1a09; font-weight:800; text-decoration:none;
-              box-shadow:0 4px 14px rgba(0,0,0,.25)">
-      ← hub に戻る
-    </a>
-  </div>
-  © amber palette · amber atlas (flowchart v2)
-</footer>
+  <details class="details-level2"><summary>barrique（約225L）</summary>
+    <p class="desc">ワイン系で馴染み深いサイズ。繊細で上品な香味を付与しやすい。</p>
+    <div><span class="label wine">🍷 wine</span><span class="note">subtle red/white notes</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">fine grain</span></div>
+  </details>
 
+  <details class="details-level2"><summary>hogshead（約225–250L）</summary>
+    <p class="desc">再構築樽が多く長期向き。穏やかな抽出でまろやかな熟成に。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">soft caramel</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">gentle oak</span></div>
+  </details>
 
-<script>
-// expand / collapse
-const toggles=[...document.querySelectorAll('.cask .toggle')];
-const panels=[...document.querySelectorAll('.panel')];
+  <details class="details-level2"><summary>puncheon（約320–500L）</summary>
+    <p class="desc">大型で長期向き。シェリーやラム由来の厚みを穏やかに付与。</p>
+    <div><span class="label wine">🍷 wine</span><span class="note">sherry/rum echo</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">slow oak</span></div>
+  </details>
 
-toggles.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const panel=btn.parentElement.querySelector('.panel');
-    const open=btn.getAttribute('aria-expanded')==='true';
-    btn.setAttribute('aria-expanded', String(!open));
-    panel.style.display=open?'none':'block';
-  });
-});
+  <details class="details-level2"><summary>butt（約500L）</summary>
+    <p class="desc">シェリーで定番の大型。フルーティーで甘い骨格をゆっくり形成。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">fruit cake</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">sherry profile</span></div>
+  </details>
 
-document.getElementById('expandAll').addEventListener('click',()=>{
-  toggles.forEach(b=>b.setAttribute('aria-expanded','true'));
-  panels.forEach(p=>p.style.display='block');
-});
+  <details class="details-level2"><summary>drum（約650L / madeira）</summary>
+    <p class="desc">マデイラ用。甘味にキレを添え、複雑で長い余韻へ。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">caramelised</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">citrus peel</span></div>
+  </details>
 
-document.getElementById('collapseAll').addEventListener('click',()=>{
-  toggles.forEach(b=>b.setAttribute('aria-expanded','false'));
-  panels.forEach(p=>p.style.display='none');
-});
+  <details class="details-level2"><summary>port pipe（約650L / port）</summary>
+    <p class="desc">ポート熟成で濃密な甘み。重厚な果実味と滑らかさが際立つ。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">red fruit</span><span class="note">chocolate</span></div>
+    <div><span class="label wine">🍷 wine</span><span class="note">tawny nuance</span></div>
+  </details>
 
-// driven filter chips
-const chips=[...document.querySelectorAll('#filterChips .chip')];
-chips.forEach(ch=>{
-  ch.addEventListener('click',()=>{
-    const on=ch.getAttribute('data-on')==='true';
-    ch.setAttribute('data-on', String(!on));
-    applyFilter();
-  });
-});
+  <details class="details-level2"><summary>gorda / bota grande（約700L）</summary>
+    <p class="desc">巨大な容量で緩やかに熟成。複雑な層をゆっくり構築する。</p>
+    <div><span class="label wine">🍷 wine</span><span class="note">slow sherry echo</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">very slow oak</span></div>
+  </details>
 
-function applyFilter(){
-  const active=new Set(
-    chips.filter(c=>c.getAttribute('data-on')==='true').map(c=>c.dataset.tag)
-  );
-  document.querySelectorAll('.row').forEach(r=>{
-    const tag=[...r.classList].find(c=>c.startsWith('tag-'))?.replace('tag-','');
-    r.classList.toggle('hidden', !active.has(tag));
-  });
-}
-applyFilter();
-</script>
+  <details class="details-level2"><summary>ton（約900–1000L）</summary>
+    <p class="desc">超大型で穏やか。丸みと一体感を与え、長期熟成に向く落ち着いたテクスチャ。</p>
+    <div><span class="label sweet">🍇 sweet</span><span class="note">rounded</span></div>
+    <div><span class="label wood">🪵 wood</span><span class="note">mellow oak</span></div>
+  </details>
+</details>
+
+<footer>© Amber Palette · 完全統合テイスティング版 Amber Atlas</footer>
 </body>
 </html>
