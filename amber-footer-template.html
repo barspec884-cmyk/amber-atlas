@@ -1,0 +1,20 @@
+﻿<footer style="text-align:center; font-size:12px; color:#7a6b5a; margin-top:40px;">
+  © Amber Palette · {{APP_NAME}} — {{EDITION_LABEL}}
+</footer>
+
+<!-- 🍯 Amber Palette standard data preload -->
+<link rel="preload" href="./{{JSON_FILENAME}}" as="fetch" crossorigin="anonymous">
+
+<script>
+/* Amber Palette JSON preloader — ensures data is included in Vercel build */
+fetch('./{{JSON_FILENAME}}')
+  .then(r => r.json())
+  .then(data => {
+    console.log("✅ Amber Palette data loaded:", data);
+    // Optionally, you can inject or display data dynamically here.
+  })
+  .catch(err => console.error("❌ Failed to load JSON:", err));
+</script>
+
+</body>
+</html>
